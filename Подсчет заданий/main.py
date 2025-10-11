@@ -5,5 +5,5 @@ from utils import *
 
 # link = get_last_load()
 # print(link)
-a = get_data()
-save_data(a)
+get_data()
+# save_data(a)

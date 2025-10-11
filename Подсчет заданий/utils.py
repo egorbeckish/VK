@@ -191,8 +191,8 @@ def get_data(condition=None):
 			switch_tab(driver, 1)
 
 			link = driver.current_url
-			place_tasks = get_content(driver, By.CLASS_NAME, "n-card__content")[4]
-			tasks = len(get_content(place_tasks, By.TAG_NAME, "span"))
+			place_tasks = get_content(driver, By.CLASS_NAME, "n-card__content")
+			tasks = len(get_content(place_tasks[4], By.TAG_NAME, "span"))
 
 			[place_check] = get_content(driver, By.CLASS_NAME, "mb-100px")
 			check = get_content(place_check, By.TAG_NAME, "span")[3].text
@@ -201,7 +201,10 @@ def get_data(condition=None):
 			date = datetime.strptime(date, "%d.%m.%Y").date()
 			time_ = datetime.strptime(time_, "%H:%M").time()
 			month = datetime.strftime(date, "%B")
-			money_tasks = tasks * 10
+
+			stage = get_content(place_tasks[3], By.CLASS_NAME, "n-flex")[-1].text
+			stage = 10 if "ЕГЭ" in stage else 18
+			money_tasks = tasks * stage
 
 			data += [(link, date, time_, month, tasks, money_tasks)]
 
