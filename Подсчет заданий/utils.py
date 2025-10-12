@@ -122,7 +122,7 @@ def save_data(df):
 	if isinstance(df, list):
 		df = pd.DataFrame(
 			df,
-			columns=["Link", "Date", "Time", "Month", "Count tasks", "Money for tasks"],
+			columns=["Link", "Stage", "Date", "Time", "Month", "Count tasks", "Money for tasks"],
 		)
 
 	months = df["Month"].unique()[::-1]
@@ -203,10 +203,10 @@ def get_data(condition=None):
 			month = datetime.strftime(date, "%B")
 
 			stage = get_content(place_tasks[3], By.CLASS_NAME, "n-flex")[-1].text
-			stage = 10 if "ЕГЭ" in stage else 18
-			money_tasks = tasks * stage
+			stage = "ЕГЭ" if "ЕГЭ" in stage else "ОГЭ"
+			money_tasks = tasks * 10 if "ЕГЭ" in stage else 18
 
-			data += [(link, date, time_, month, tasks, money_tasks)]
+			data += [(link, stage, date, time_, month, tasks, money_tasks)]
 
 			close_tab(driver)
 
