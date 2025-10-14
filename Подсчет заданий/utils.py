@@ -148,8 +148,8 @@ def get_data(condition=None):
 
 	login, password, *_ = get_content(driver, By.TAG_NAME, "input")
 
-	send_data(login, "beckish10@mail.ru")
-	send_data(password, "beckish10")
+	send_data(login, LOGIN)
+	send_data(password, PASSWORD)
 
 	accept, *_ = get_content(driver, By.TAG_NAME, "button")
 	click_element(accept, 3)

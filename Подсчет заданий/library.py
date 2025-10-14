@@ -8,3 +8,6 @@ import re
 import pandas as pd
 import os
 import openpyxl
+from dotenv import dotenv_values
+
+LOGIN, PASSWORD = dotenv_values(r".env").values()
