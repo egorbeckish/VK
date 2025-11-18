@@ -200,7 +200,7 @@ def get_data(condition):
 
 			stage = get_content(place_tasks[3], By.CLASS_NAME, "n-flex")[-1].text
 			stage = "ЕГЭ" if "ЕГЭ" in stage else "ОГЭ"
-			money_tasks = tasks * 10 if "ЕГЭ" in stage else 18
+			money_tasks = tasks * EGE if "ЕГЭ" in stage else OGE
 
 			data += [(link, stage, date, time_, month, tasks, money_tasks)]
 

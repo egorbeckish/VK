@@ -11,4 +11,6 @@ import os
 import openpyxl
 from dotenv import dotenv_values
 
-LOGIN, PASSWORD = dotenv_values(r".env").values()
+LOGIN, PASSWORD, EGE, OGE = dotenv_values(r".env").values()
+EGE = int(EGE)
+OGE = int(OGE)
