@@ -164,20 +164,9 @@ def get_data(condition):
 
 		for i, homework in enumerate(homeworks):
 			link = homework.get_attribute("href")
-
-			if condition is None:
-				check, *_ = get_content(homework, By.TAG_NAME, "span")
-				[date] = re.match(r"Проверено:\s(?P<date>[\d]{2}\.[\d]{2}\.[\d]{4})\,\s[\d]{2}\:[\d]{2}", check.text).groups()
-				date = datetime.strptime(date, "%d.%m.%Y").date()
-
-				if date.month < 9:
-					flag = False
-					break
-
-			else:
-				if condition == link:
-					flag = False
-					break
+			if condition == link:
+				flag = False
+				break
 
 			driver.execute_script(f"window.open('{link}', '_blank');")
 			switch_tab(driver, 0)
@@ -185,16 +174,26 @@ def get_data(condition):
 		tabs = len(get_tabs(driver)[1:])
 		for _ in range(tabs):
 			switch_tab(driver, 1)
+			time.sleep(.5)
+			
+			[place_check] = get_content(driver, By.CLASS_NAME, "mb-100px")
+			check = get_content(place_check, By.TAG_NAME, "span")[3].text
+			date, time_ = re.match(r"Проверено:\s(?P<date>[\d]{2}\.[\d]{2}\.[\d]{4})\,\s(?P<time>[\d]{2}\:[\d]{2})", check).groups()
+			date = datetime.strptime(date, "%d.%m.%Y").date()
+
+			if date.month < 9 and date.year <= 2025:
+				flag = False
+				break
 
 			link = driver.current_url
 			place_tasks = get_content(driver, By.CLASS_NAME, "n-card__content")
 			tasks = len(get_content(place_tasks[4], By.TAG_NAME, "span"))
 
-			[place_check] = get_content(driver, By.CLASS_NAME, "mb-100px")
-			check = get_content(place_check, By.TAG_NAME, "span")[3].text
+			#[place_check] = get_content(driver, By.CLASS_NAME, "mb-100px")
+			#check = get_content(place_check, By.TAG_NAME, "span")[3].text
 
-			date, time_ = re.match(r"Проверено:\s(?P<date>[\d]{2}\.[\d]{2}\.[\d]{4})\,\s(?P<time>[\d]{2}\:[\d]{2})", check).groups()
-			date = datetime.strptime(date, "%d.%m.%Y").date()
+			#date, time_ = re.match(r"Проверено:\s(?P<date>[\d]{2}\.[\d]{2}\.[\d]{4})\,\s(?P<time>[\d]{2}\:[\d]{2})", check).groups()
+			#date = datetime.strptime(date, "%d.%m.%Y").date()
 			time_ = datetime.strptime(time_, "%H:%M").time()
 			month = datetime.strftime(date, "%B")
 
